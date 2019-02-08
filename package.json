@@ -1,0 +1,67 @@
+{
+  "name": "reactron-icalendar",
+  "version": "1.0.0-alpha.1",
+  "author": {
+    "name": "Martin Pietschmann",
+    "email": "schirkan@gmail.com"
+  },
+  "description": "iCalendar module for Reactron",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/schirkan/reactron-icalendar"
+  },
+  "browser": "dist/bundle.browser.js",
+  "main": "dist/bundle.server.js",
+  "scripts": {
+    "build": "npm run build:server && npm run build:browser",
+    "build:browser": "rollup -c rollup.config.browser.js",
+    "build:server": "rollup -c rollup.config.server.js",
+    "watch:browser": "rollup -c rollup.config.browser.js -w",
+    "watch:server": "rollup -c rollup.config.server.js -w"
+  },
+  "dependencies": {
+    "request": "^2.88.0",
+    "request-promise-native": "^1.0.5"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.2.2",
+    "@babel/plugin-external-helpers": "^7.2.0",
+    "@babel/plugin-proposal-class-properties": "^7.3.0",
+    "@babel/plugin-proposal-object-rest-spread": "^7.3.2",
+    "@babel/plugin-transform-runtime": "^7.2.0",
+    "@babel/preset-env": "^7.3.1",
+    "@babel/preset-react": "^7.0.0",
+    "@babel/register": "^7.0.0",
+    "@fortawesome/fontawesome-svg-core": "^1.2.14",
+    "@fortawesome/free-regular-svg-icons": "^5.7.1",
+    "@fortawesome/free-solid-svg-icons": "^5.7.1",
+    "@fortawesome/react-fontawesome": "^0.1.4",
+    "@schirkan/reactron-interfaces": "^2.0.1",
+    "@types/moment-timezone": "^0.5.10",
+    "@types/numeral": "0.0.25",
+    "@types/request-promise-native": "^1.0.15",
+    "autoprefixer": "^9.4.7",
+    "classnames": "^2.2.6",
+    "css-loader": "^2.1.0",
+    "moment": "^2.24.0",
+    "moment-timezone": "^0.5.23",
+    "node-sass": "^4.11.0",
+    "numeral": "^2.0.6",
+    "postcss-scss": "^2.0.0",
+    "react": "^16.8.1",
+    "react-dom": "^16.8.1",
+    "rollup": "^1.1.2",
+    "rollup-plugin-babel": "^4.3.2",
+    "rollup-plugin-commonjs": "^9.2.0",
+    "rollup-plugin-node-resolve": "^4.0.0",
+    "rollup-plugin-postcss": "^2.0.3",
+    "rollup-plugin-serve": "^1.0.1",
+    "rollup-plugin-typescript": "^1.0.0",
+    "rollup-watch": "^4.3.1",
+    "style-loader": "^0.23.1",
+    "typescript": "^3.3.3",
+    "url-loader": "^1.1.2"
+  }
+}
