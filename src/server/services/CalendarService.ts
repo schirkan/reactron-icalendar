@@ -2,6 +2,7 @@ import { IReactronServiceContext } from '@schirkan/reactron-interfaces';
 import * as request from 'request-promise-native';
 import { ICalendarServiceOptions } from 'src/common/interfaces/ICalendarServiceOptions';
 import { ICalendarService, ICalendarData } from 'src/common/interfaces/ICalendarService';
+var ical = require('node-ical');
 
 interface ICacheItem {
   timestamp: number;
@@ -23,10 +24,20 @@ export class CalendarService implements ICalendarService {
   }
 
   async getCalendarEntries(url: string): Promise<ICalendarData> {
-    const result = this.getOrCreate<ICalendarData>(url, () => {
-      return this.getResponseInternal('get', url, {}, CalendarService.mapToCalendar);
+    return this.getOrCreate<ICalendarData>(url, async () => {
+      const response = await this.getResponseInternal('get', url);
+      return new Promise((resolve, reject) => {
+        ical.parseICS(response, (err: any, data: any) => {
+          if (err) {
+            this.context.log.error(err);
+            reject(err);
+          } else {
+            const result = CalendarService.mapToCalendar(data);
+            resolve(result);
+          }
+        });
+      });
     });
-    return result;
   }
 
   public static mapToCalendar(data: any): ICalendarData {
@@ -34,9 +45,9 @@ export class CalendarService implements ICalendarService {
   }
 
   private async getResponseInternal<TResponse>(method: 'get' | 'post', url: string,
-    requestOptions: request.RequestPromiseOptions, mapper: (response: any) => TResponse): Promise<TResponse> {
+    requestOptions?: request.RequestPromiseOptions): Promise<TResponse> {
     this.context.log.debug('fetch', url);
-    requestOptions = { ...requestOptions, json: true, rejectUnauthorized: false, resolveWithFullResponse: true };
+    requestOptions = { ...requestOptions, rejectUnauthorized: false, resolveWithFullResponse: true };
 
     try {
       let response: request.FullResponse | undefined;
@@ -56,7 +67,7 @@ export class CalendarService implements ICalendarService {
         this.context.log.error(response.statusMessage, response.body);
         throw new Error(response.statusMessage);
       }
-      return mapper(response.body);
+      return response.body;
     } catch (error) {
       this.context.log.error(error);
       throw error;

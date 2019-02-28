@@ -28,6 +28,7 @@ function __awaiter(thisArg, _arguments, P, generator) {
     });
 }
 
+var ical = require('node-ical');
 class CalendarService {
     constructor(context) {
         this.context = context;
@@ -45,19 +46,30 @@ class CalendarService {
     }
     getCalendarEntries(url) {
         return __awaiter(this, void 0, void 0, function* () {
-            const result = this.getOrCreate(url, () => {
-                return this.getResponseInternal('get', url, {}, CalendarService.mapToCalendar);
-            });
-            return result;
+            return this.getOrCreate(url, () => __awaiter(this, void 0, void 0, function* () {
+                const response = yield this.getResponseInternal('get', url);
+                return new Promise((resolve, reject) => {
+                    ical.parseICS(response, (err, data) => {
+                        if (err) {
+                            this.context.log.error(err);
+                            reject(err);
+                        }
+                        else {
+                            const result = CalendarService.mapToCalendar(data);
+                            resolve(result);
+                        }
+                    });
+                });
+            }));
         });
     }
     static mapToCalendar(data) {
         return data; // TODO
     }
-    getResponseInternal(method, url, requestOptions, mapper) {
+    getResponseInternal(method, url, requestOptions) {
         return __awaiter(this, void 0, void 0, function* () {
             this.context.log.debug('fetch', url);
-            requestOptions = Object.assign({}, requestOptions, { json: true, rejectUnauthorized: false, resolveWithFullResponse: true });
+            requestOptions = Object.assign({}, requestOptions, { rejectUnauthorized: false, resolveWithFullResponse: true });
             try {
                 let response;
                 switch (method) {
@@ -76,7 +88,7 @@ class CalendarService {
                     this.context.log.error(response.statusMessage, response.body);
                     throw new Error(response.statusMessage);
                 }
-                return mapper(response.body);
+                return response.body;
             }
             catch (error) {
                 this.context.log.error(error);

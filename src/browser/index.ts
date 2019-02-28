@@ -5,9 +5,9 @@ export * from './components/CalendarListView/CalendarListView';
 
 export const components: IReactronComponentDefinition[] = [{
   component: CalendarListView,
-  name: 'DepartureMonitor',
-  description: 'Public Transport Departure Monitor',
-  displayName: 'Public Transport Departure Monitor',
+  name: 'CalendarListView',
+  description: 'Calendar Event List',
+  displayName: 'Calendar Event List',
   fields: [{
     displayName: 'iCal URL',
     name: 'url',

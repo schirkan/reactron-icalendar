@@ -3,6 +3,7 @@ import resolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
 import postcss from 'rollup-plugin-postcss';
 import typescript from 'rollup-plugin-typescript';
+import autoprefixer from 'autoprefixer';
 
 export default {
     input: './src/browser/index.ts',
@@ -13,7 +14,8 @@ export default {
     }],
     plugins: [
         typescript(),
-        postcss({ modules: true }),
+        postcss({ plugins: [autoprefixer()] }),
+        // postcss({ modules: true }),
         babel({ exclude: 'node_modules/**' }),
         resolve(),
         commonjs(),
@@ -21,6 +23,13 @@ export default {
     external: [
         '@schirkan/reactron-interfaces',
         'react',
-        'react-dom'
+        'react-dom',
+        '@fortawesome/fontawesome-svg-core',
+        '@fortawesome/free-regular-svg-icons',
+        '@fortawesome/free-solid-svg-icons',
+        '@fortawesome/react-fontawesome',
+        'numeral',
+        'moment',
+        'moment-timezone'
     ]
 };

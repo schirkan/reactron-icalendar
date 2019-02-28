@@ -64,7 +64,7 @@ System.register(['@schirkan/reactron-interfaces', 'react'], function (exports, m
             var css = "";
             styleInject(css);
 
-            class CalendarListView$1 extends Component {
+            class CalendarListView extends Component {
                 constructor(props) {
                     super(props);
                     this.state = { loading: false };
@@ -125,13 +125,13 @@ System.register(['@schirkan/reactron-interfaces', 'react'], function (exports, m
                         this.renderHeader(),
                         this.renderCalendar()));
                 }
-            } exports('CalendarListView', CalendarListView$1);
+            } exports('CalendarListView', CalendarListView);
 
             const components = exports('components', [{
-                    component: CalendarListView$1,
-                    name: 'DepartureMonitor',
-                    description: 'Public Transport Departure Monitor',
-                    displayName: 'Public Transport Departure Monitor',
+                    component: CalendarListView,
+                    name: 'CalendarListView',
+                    description: 'Calendar Event List',
+                    displayName: 'Calendar Event List',
                     fields: [{
                             displayName: 'iCal URL',
                             name: 'url',
